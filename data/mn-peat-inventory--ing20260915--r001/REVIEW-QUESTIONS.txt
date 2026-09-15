@@ -73,16 +73,54 @@ the items below before the release_status is advanced past "registered".
    as "U.S. Department of Energy" (party_iid=us-doe, as currently recorded),
    or a distinct lab/contractor that should get its own party record?
 
-10. Individual contributors not registered
+10. Individual contributors -- PARTIALLY RESOLVED 2026-09-15
     Profinfo.csv (Desc_who) and the lab tables name dozens of individual
     field describers and analysts across 1971-2006 (e.g., "D. Olson",
     "M. Oberhelman and A. Jagunich", "R. Weber"), identified only by
     initials/surname with no given names, affiliations, or disambiguating
-    detail. None were registered as parties in this pass -- creating
-    identity records from initials-only data seemed out of scope and risked
-    inventing identity completeness we don't have. If person-level
-    attribution matters to the lab, this warrants a dedicated
-    contributor-resolution pass.
+    detail.
+
+    A new ancillary source, Inventory_of_peat_resources.pdf (the
+    Koochiching County county-level report, added to raw/ancillary
+    information/ on 2026-09-15), names 18 individuals with enough context
+    (title-page authorship/"Technical Assistance" credit, or recurring
+    Appendix D "Described And Sampled By" site records) to register as
+    person-level parties: tj-malterer, hd-mooers, ls-severson, dj-olson,
+    dr-mellem, sl-nelson, rl-johnson, hm-koslucher, d-haverkost, b-sether,
+    j-dahl, b-leuelling, k-hayner, b-balen, r-wakanabo, m-domeier, r-fox,
+    and r-zarth (see registry--parties.csv / registry--party-roles.csv,
+    all role=investigation, role_schema=credit).
+
+    Scoping decisions made in this pass:
+    - Only field-description/sampling contributions were credited (the
+      activity that actually produced the point data in
+      Profinfo.csv/Siteinfo.csv/Locate.csv/the lab tables). Contributions
+      to the report itself -- writing, editing, cartography, program
+      administration, external review (e.g. Dennis Asmussen, Dr. Melvyn
+      Kopstein, Mary Keirstead, Cornelia Cameron, Don Grubich, Harlan
+      Finney, Morris Eng) -- were deliberately NOT credited, since this
+      report is being used only as a contributor-identification source,
+      not as registered content (the lab is using the point database
+      only, not the report narrative/maps/appendices).
+    - Every one of these 18 party-role rows is scoped in its notes to
+      Koochiching County fieldwork only -- one of ~21 counties represented
+      in Locate.csv -- and is NOT resolved to specific rows in
+      Profinfo.csv/Siteinfo.csv. No claim is made about these individuals'
+      involvement with other counties' data in this dataset.
+    - Given names remain initials-only for all 18 (e.g. "T. J." rather
+      than a spelled-out first name); this was accepted here because each
+      person has a corroborating context (title-page credit and/or
+      repeated Appendix D site attributions) that the bare Profinfo.csv
+      Desc_who initials lack on their own.
+
+    Individuals named only as initials in Profinfo.csv Desc_who for
+    OTHER counties (e.g. "M. Oberhelman and A. Jagunich", "R. Weber") --
+    where no comparable corroborating document has been supplied --
+    remain unresolved to person-level parties. If person-level attribution
+    for those matters to the lab, this still warrants a dedicated
+    contributor-resolution pass (e.g. locating the Aitkin,
+    Beltrami-Lake of the Woods, and SW St. Louis County equivalents of
+    this report).
 
 11. Geographic bounding box
     packages.west/east/south/north were left blank. Locate.csv coordinates
@@ -124,3 +162,24 @@ Minted identifiers used in this registration:
     release_slug = mn-peat-inventory--ing20260915--r001
     party_id (mn-dnr) = 71914630-f766-40a4-b4e0-27ed7ff2620c
     party_id (us-doe) = a32eea4f-6c9c-45df-b17a-85f0c6a82416
+
+Additional party_ids minted 2026-09-15 (see item 10 above; full detail in
+registry--parties.csv):
+    tj-malterer  = 60a1cead-57e3-4af3-9d9e-39fd50e63c28
+    hd-mooers    = e831a927-481f-4aa2-b138-c611fcdcb38c
+    ls-severson  = 3e846581-143c-4a41-9365-cf49f3139b0c
+    dj-olson     = 720cbe76-21eb-4529-9810-d42fc624e2e3
+    dr-mellem    = 0ba517e8-44ba-43a2-91e2-04a29d2df651
+    sl-nelson    = f8134fd9-1bfd-45fb-9be1-e597da0c03b2
+    rl-johnson   = d9fd658d-659e-4fdc-a49b-932794b1fc8f
+    hm-koslucher = 1e2f48e8-420a-4801-991a-84527eb4b3fc
+    d-haverkost  = a7da6aeb-551c-469d-9336-772c6243afbb
+    b-sether     = 34cb8dbc-b79e-44fc-bda3-e64f9ef5ea14
+    j-dahl       = fb2a167d-65a2-4872-840d-396600335b7d
+    b-leuelling  = 0424836f-4262-4914-a7a3-ebf426196cf7
+    k-hayner     = d26b8ba0-95ad-4002-99fb-3cc742193555
+    b-balen      = 2b6a6b54-c5f5-4efc-bda8-3c31770144f8
+    r-wakanabo   = 1bffda60-2f9e-4d1c-a12e-f9d9810b92ad
+    m-domeier    = c4dc033d-28ca-4bfd-bd9d-820fb1352650
+    r-fox        = 86d6471f-e38c-49fb-b83d-b8a581a7de3c
+    r-zarth      = a07d6429-5d8d-47e6-8775-3f74bceacc23
