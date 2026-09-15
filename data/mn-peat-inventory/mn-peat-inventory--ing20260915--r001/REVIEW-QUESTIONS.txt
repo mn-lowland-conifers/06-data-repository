@@ -1,0 +1,126 @@
+mn-peat-inventory -- ing20260915 -- r001
+Open questions from LLM-assisted first-pass registration (2026-09-15)
+======================================================================
+
+This registration was drafted by an LLM curation assistant from the source
+delivery in raw/ (11 CSVs) and the MnGeo landing-page PDF under
+raw/ancillary information/. It is a DRAFT. A human curator should resolve
+the items below before the release_status is advanced past "registered".
+
+1. Registration granularity
+   One packages row was created covering the whole 11-table delivery.
+   Confirm this is preferred over one row per table (or per shapefile-
+   equivalent), given the tables share a common key (DNR Peat Inventory ID #)
+   but are otherwise fairly distinct in content (location, site info, lab
+   results, reference/crosswalk tables).
+
+2. Coverage dates vs. narrative
+   The MnGeo summary frames the project as starting in 1976 with reports/
+   maps published 1979-1982. But Profinfo.csv "Desc_when" values directly
+   span 1971-08-02 to 2006-03-20. Is the wider data-derived range correct
+   (i.e., site description/lab work continued for decades after the printed
+   reports), or should coverage_start/coverage_end instead reflect only the
+   original reconnaissance/detailed survey period described in the
+   narrative?
+
+3. Three anomalous dates in Profinfo.csv "Desc_when"
+   - "March 18, 1882" (LOTW-3215804-795, H. Mooers) -- plausibly 1982
+   - "February 13, 2016" (STLO-2005336-752, M. Oberhelman and A. Jagunich)
+     -- sits inside a run of "February 13, 2006" entries by the same pair;
+     plausibly 2006
+   - "July 26, 2977" (STLO-1905102-25E, F. Fox) -- plausibly 1977
+   These were NOT corrected in the registry row. Confirm with DNR source or
+   correct during a later harmonization/extraction pass, not in the raw
+   files.
+
+4. County count mismatch
+   MnGeo summary text says "twenty Minnesota counties." Locate.csv actually
+   contains 21 distinct county names (Aitkin, Beltrami, Benton, Carlton,
+   Cass, Chisago, Clearwater, Crow Wing, Hubbard, Isanti, Itasca, Kanabec,
+   Kittson, Koochiching, Lake, Lake of the Woods, Marshall, Mille Lacs,
+   Pine, Roseau, St. Louis). Worth a note either way; not resolved here.
+
+5. Table count mismatch
+   MnGeo summary text says "nine data tables ... stored in one Access
+   database." TablesInPeat.csv (the in-database table catalog) only
+   enumerates 7 tables (Locate, Siteinfo, Profinfo, Profile, Labdnr,
+   Labprox, Labulti). The delivery also includes SiteDNR.csv,
+   BotanicalOrigin.csv, and VonPost.csv, which are not listed in
+   TablesInPeat.csv's own catalog. Which of these are "core" tables vs.
+   reference/ancillary material, and does that reconcile to nine?
+
+6. License terms
+   The landing page names a "Custom License" and a "View license details"
+   link, but the actual license text was not part of the supplied source
+   material and was not fetched. Someone should pull the full terms from
+   the landing page before this dataset is used beyond internal/registered
+   status, and before any redistribution decision is made.
+
+7. Local purpose
+   packages.purpose was left blank. Why does the lab want this dataset
+   (e.g., input to a peatland carbon-stock or soils modeling effort)? Not
+   stated anywhere in the supplied source material.
+
+8. DOI
+   packages.doi was set to "unk" rather than "nap" -- no DOI was observed
+   on the captured landing page, but its absence was not positively
+   confirmed against the full metadata record (the "View All Metadata"
+   link was not fetched).
+
+9. "DOE Coal Analysis Laboratory" identity
+   TablesInPeat.csv names a "DOE Coal Analysis Laboratory" as the performer
+   of the Labprox/Labulti analyses. Is this the same organizational entity
+   as "U.S. Department of Energy" (party_iid=us-doe, as currently recorded),
+   or a distinct lab/contractor that should get its own party record?
+
+10. Individual contributors not registered
+    Profinfo.csv (Desc_who) and the lab tables name dozens of individual
+    field describers and analysts across 1971-2006 (e.g., "D. Olson",
+    "M. Oberhelman and A. Jagunich", "R. Weber"), identified only by
+    initials/surname with no given names, affiliations, or disambiguating
+    detail. None were registered as parties in this pass -- creating
+    identity records from initials-only data seemed out of scope and risked
+    inventing identity completeness we don't have. If person-level
+    attribution matters to the lab, this warrants a dedicated
+    contributor-resolution pass.
+
+11. Geographic bounding box
+    packages.west/east/south/north were left blank. Locate.csv coordinates
+    are UTM Zone 15N (NAD83, with legacy NAD27 also present), not WGS84
+    decimal degrees as the dictionary requires. A real coordinate
+    transform from Locate.csv (not an eyeballed estimate) is needed to
+    populate these fields.
+
+12. source_citation is constructed, not verbatim
+    No "cite this dataset as ..." string was present on the captured
+    landing page. The source_citation field was built from discrete
+    metadata fields (publisher, title, published date, URL). Check it
+    against the landing page's "View All Metadata" link before treating it
+    as authoritative.
+
+13. Vocabulary gaps (not applied, for lab decision)
+    - No vocab--datacite-*.csv or vocab--eml-*.csv file exists in vocab/,
+      even though party-roles.role_schema allows "datacite" and "eml".
+      DataCite's contributor-type vocabulary has an explicit "Funder" role
+      meant for organizations, which is arguably a better fit for the
+      us-doe funding-acquisition assertion than CRediT's
+      "funding-acquisition" (a role framed around what a person does,
+      stretched here onto an organization). Consider adding a DataCite
+      contributor-type vocab file if organization-level roles like this
+      recur.
+    - No content-domain term distinguishes organic/peat soils from mineral
+      soils; content_domains uses the broad "soil" term as supplied.
+
+Party-role assertions recorded (all release_slug blank = dataset-level):
+    mn-dnr  / credit / investigation
+    mn-dnr  / credit / resources
+    us-doe  / credit / funding-acquisition
+    us-doe  / credit / resources
+
+Minted identifiers used in this registration:
+    dataset_id   = 97ba2066-e475-436c-97ad-db0e87ade8be
+    ds_iid       = mn-peat-inventory
+    release_id   = 01a0a25d-0400-7ea6-939e-d7c14898a570
+    release_slug = mn-peat-inventory--ing20260915--r001
+    party_id (mn-dnr) = 71914630-f766-40a4-b4e0-27ed7ff2620c
+    party_id (us-doe) = a32eea4f-6c9c-45df-b17a-85f0c6a82416

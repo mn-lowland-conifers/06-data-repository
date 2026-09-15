@@ -1,1 +1,5 @@
 ds_iid,release_slug,party_iid,role_schema,role,role_degree,role_order,notes
+mn-peat-inventory,,mn-dnr,credit,investigation,nap,nap,"'Crews collected notes on the peatland vegetation, determined the peat type throughout the profile, measured the peat depth, and collected samples' - MnGeo summary. Organization-level assignment; individual field describers are named in Profinfo.csv (Desc_who, e.g. 'D. Olson', 'M. Oberhelman') but not resolved to person-level parties in this pass - see REVIEW-QUESTIONS.txt."
+mn-peat-inventory,,mn-dnr,credit,resources,nap,nap,"'Results of DNR laboratory analysis (e.g., bulk density, pH, ash content)' - TablesInPeat.csv row for Labdnr."
+mn-peat-inventory,,us-doe,credit,funding-acquisition,nap,nap,'With the U.S. Department of Energy funding beginning in 1979...' - MnGeo summary.
+mn-peat-inventory,,us-doe,credit,resources,nap,nap,'DOE Coal Analysis Laboratory analysis' performed the Labprox/Labulti proximate and ultimate analyses - TablesInPeat.csv. See caveat in party notes about whether this lab is organizationally distinct from DOE proper.
