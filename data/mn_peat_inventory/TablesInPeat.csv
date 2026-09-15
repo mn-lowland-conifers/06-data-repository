@@ -1,0 +1,8 @@
+UniqRec,Peatdatabase_TableName,Type_of_data
+3,Profinfo,"Surface conditions of the site, indication if, and what type of, laboratory analysis is available"
+4,Profile,Peat profile characteristics
+5,Labdnr,"Results of DNR laboratory analysis (e.g., bulk density, pH, ash content)"
+6,Labprox,"Results of DOE Coal Analysis Laboratory analysis (e.g., heating value, volatiles, fixed carbon)"
+7,Labulti,"Results of DOE Coal Analysis Laboratory analysis (e.g., total carbon, hydrogen, sulfur, oxygen)"
+1,Locate,Locational information about the peat inventory sites
+2,Siteinfo,"General information about the site, type of peat survey, peatland classification, and so on"

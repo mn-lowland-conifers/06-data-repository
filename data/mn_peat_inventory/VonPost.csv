@@ -1,0 +1,11 @@
+Degree of Decomposition,USDA SCS Classification,Nature of water expressed on squeezing,Proportion of peat extruded between fingers,Nature of peat residues,Decomposition description
+H1,Fibric,"Clear, colorless","None, elastic","Unaltered, fibrous",Undecomposed
+H2,Fibric,"Almost clear, yellow-brown",,Almost unaltered,Almost undecomposed
+H3,Fibric,"Slight turbid, brown",,Most remains easily identifiable,Very slightly decomposed
+H4,Hemic,"Turbid, brown",,Most remains identifiable,Slightly decomposed
+H5,Hemic,"Strongly turbid, contains a little peat in suspension",Very little,Bulk of remains difficult to identify,Moderately well decomposed
+H6,Hemic,"Muddy, much peat in suspension",One third,Bulk of remains unidentifiable,Well decomposed
+H7,Sapric,Strongly muddy remains,One half,Relatively few identifiable,Strongly decomposed
+H8,Sapric,"Thick mud, little free water",Two thirds,"Only resistant roots, fibers, and bark, etc., identifiable",Very strongly decomposed
+H9,Sapric,No free water,Almost all,Practically no identifiable remains,Almost completely decomposed
+H10,Sapric,No free water,All,Completely amorphous,Completely decomposed
