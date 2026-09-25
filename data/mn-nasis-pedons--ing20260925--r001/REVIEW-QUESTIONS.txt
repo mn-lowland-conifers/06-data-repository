@@ -1,0 +1,173 @@
+mn-nasis-pedons -- ing20260925 -- r001
+Open questions from LLM-assisted first-pass registration (2026-09-25)
+======================================================================
+
+This registration was drafted by an LLM curation assistant from the source
+delivery (mn-nasis-16DEC2024.gdb, mn-nasis-export.sqlite, tcms-nasis.shp* and
+mn-nasis-export_logFile.txt) originally uploaded at data/NASIS/MN-NASIS/ and
+moved unchanged into raw/ during this registration. It is a DRAFT. A human
+curator should resolve the items below before release_status is advanced
+past "registered".
+
+1. POSSIBLE PII GAP in main.siteobstext -- HIGH PRIORITY
+   mn-nasis-export_logFile.txt states the extraction tool attempted a
+   scripted step to "delete attributes that may contain PII information"
+   before delivery, but that step raised a Python KeyError for the
+   main.siteobstext table specifically ("KeyError: 'siteobstext'") and did
+   not complete for it. The log's own captured error excerpts for
+   main.siteobstext include what appear to be personal names in free-text
+   fields (e.g. a record reading in part "...|Lee Camp||||..."). This means
+   main.siteobstext (24,063 records) has NOT been confirmed free of PII, and
+   may contain names or other identifying text that the source intended to
+   redact. Recorded in packages.intellectual_rights, but a human curator
+   should decide whether main.siteobstext needs restricted access, redaction,
+   or removal before this dataset is used or shared beyond the registry
+   entry itself.
+
+2. Registration granularity
+   One packages row was created covering all three delivered representations
+   of what the log describes as a single coordinated NASIS export event: the
+   SQLite database (mn-nasis-export.sqlite), the file geodatabase
+   (mn-nasis-16DEC2024.gdb), and the companion shapefile (tcms-nasis.shp*).
+   Confirm this is preferred over separate rows per artifact, especially
+   since the sqlite db and gdb appear to carry substantially overlapping
+   pedon/site content in different formats.
+
+3. Coordinate label swap in source log
+   mn-nasis-export_logFile.txt's "Bounding Box Coordinates" block reads:
+       East Longitude: -97.79037641014315
+       West Longitude: -88.90780528198815
+   This is geographically backwards for a Minnesota-area box: -97.79 is
+   farther west than -88.90, and the pair matches Minnesota's real extent
+   almost exactly if the labels are swapped. packages.west/east were
+   populated using standard geographic convention (west = the more negative
+   value) rather than the log's literal labels. Confirm this reading against
+   the source tool/script if possible; not corrected in the log file itself.
+
+4. Coverage dates -- anomalies excluded
+   packages.coverage_start/coverage_end (1900-12-14 to 2024-12-05) exclude
+   28 of 79,451 main.siteobs.obsdate values (Julian-date encoded) that fall
+   outside a 1900-2025 window:
+     - 3 values before 1900 (earliest: 1755-01-01)
+     - 25 values after 2025, including a cluster of 19 records dated in 2096
+       (June 1-17, 2096) and isolated values as late as 6469-10-01
+   These were NOT corrected here -- they are presumed NASIS data-entry
+   errors, not extraction artifacts. Full unfiltered obsdate range is
+   1755-01-01 to 6469-10-01. Confirm the 1900-2025 filtering threshold is
+   reasonable, or whether a tighter/looser window should be used.
+
+5. Three malformed source records dropped
+   The log reports 3 individual main.siteobstext records in NASIS itself
+   contained unescaped "|" delimiters within a text field and were dropped
+   by the extraction tool (not by this registration). This does not appear
+   to affect the 79,451 pedon count reported elsewhere in the log. No action
+   taken; noted for completeness.
+
+6. License / rights unresolved
+   packages.license = unk. No formal license or rights statement was
+   supplied with this delivery (unlike mn-peat-inventory, which at least had
+   a named "Custom License" on a public landing page). NASIS/NCSS soil
+   survey data are broadly understood to be public USDA data, but that has
+   not been independently confirmed for this specific export, and item 1
+   above (possible unredacted PII) is a separate concern from the general
+   license question.
+
+7. source_citation constructed, not verbatim
+   No "cite this data as ..." string accompanied the delivery (there is no
+   README, landing-page capture, or metadata document beyond the export log
+   and the shapefile's ArcGIS lineage XML). The source_citation field was
+   built by the curator from general USDA/NASIS citation convention. Confirm
+   against NRCS/NASIS's actual preferred citation format before treating it
+   as authoritative.
+
+8. Extraction operator identity ("JELIN062") -- NOT registered as a party
+   mn-nasis-export_logFile.txt's own embedded Windows file paths reference a
+   user directory "C:\Users\JELIN062\...", consistent with a University of
+   Minnesota username pattern for the lab's PI (Nic Jelinski, credited as
+   this Handbook's author per docs/index.html), but this was NOT
+   independently confirmed. No party record was created for this person in
+   this pass, per the rule against inventing identity from a weak inference.
+   If confirmed, a credit/data-curation party-role assertion (role_source =
+   mn-nasis-export_logFile.txt file paths) may be warranted for running the
+   extraction and delivering it to the lab.
+
+9. NRCS investigation role is organization-level only
+   The credit/investigation role assigned to usda-nrcs in this pass is a
+   broad, organization-level assertion covering the NCSS field-description
+   work generally. It has NOT been resolved to individual field describers.
+   The pedon feature-class schema includes a "descname" (Describer Name)
+   field per tcms-nasis.shp.xml, meaning individual-level attribution data
+   likely exists within the delivered tables themselves, but extracting and
+   disambiguating ~79,451 records' worth of describer names was judged out
+   of scope for a first-pass registration. Also note NCSS is a *cooperative*
+   survey -- some field work represented here may have been performed by
+   non-NRCS cooperators (university or state partners) rather than NRCS
+   directly; this was not distinguished in this pass.
+
+10. content_domains includes "hydrology" -- judgment call
+    Unlike mn-peat-inventory (soil|vegetation|laboratory|geospatial|
+    metadata), this release also includes "hydrology" based on non-trivial
+    record counts in soil-moisture/temperature monitoring and infiltration
+    tables (sitesoilmoist: 5,130; soilmonitordata/soiltempmonitordata: 734
+    each; peinfiltration* tables: several hundred combined, per the log's
+    "Importing Pedon Data into Database" table). Confirm this domain
+    addition is appropriate for the controlled vocabulary's intended
+    granularity.
+
+11. .gdb internal table/field list not independently enumerated
+    No GDAL/OGR tooling (ogrinfo, gdalinfo, fiona, geopandas) was available
+    in this environment to open mn-nasis-16DEC2024.gdb directly. Its schema
+    is assumed (based on tcms-nasis.shp.xml lineage and the shapefile's
+    presumed shared origin) to mirror the "pedon" feature class described in
+    the NASISPedonsFGDBTemplate_NASIS_7_4_1.gdb lineage, but this was not
+    independently verified table-by-table the way mn-nasis-export.sqlite's
+    93 tables were (queried directly via Python's sqlite3 module). Consider
+    a follow-up pass with GDAL available if the .gdb's exact table list
+    needs confirming.
+
+12. Raw delivery not committed to git (large-file / git-lfs decision)
+    The raw delivery is ~813 MB (mn-nasis-export.sqlite: 452 MB;
+    mn-nasis-16DEC2024.gdb: 375 MB; tcms-nasis.shp* + log: ~9 MB combined),
+    with no git-lfs configured in this repository (.git was ~11 MB before
+    this registration). Per explicit instruction from the user this session,
+    data/mn-nasis-pedons--ing20260925--r001/raw/ was added to a newly
+    created .gitignore rather than committed; only the packages row, the
+    SHA-256 manifest, and .gitignore itself are version-controlled.
+    git-lfs setup (or another large-file strategy) remains an open
+    repository-infrastructure decision beyond the scope of this one
+    registration.
+
+13. Release directory lost its ds_iid parent folder mid-session
+    This release was originally created at the documented standard path
+    data/mn-nasis-pedons/mn-nasis-pedons--ing20260925--r001/raw/ (matching
+    docs/10-registering-a-dataset.html's data/<ds_iid>/<release_slug>/raw/
+    convention). Partway through this session, the intermediate
+    data/mn-nasis-pedons/ directory disappeared on disk and its one child
+    (mn-nasis-pedons--ing20260925--r001/) ended up directly under data/
+    instead -- with no shell command from this session responsible for that
+    move. The same flat pattern was independently observed on the existing,
+    already-completed mn-peat-inventory release (its own packages.csv notes
+    describe a nested data/mn-peat-inventory/mn-peat-inventory--ing20260915--
+    r001/raw/ target, but the actual directory on disk is flat:
+    data/mn-peat-inventory--ing20260915--r001/raw/). This repository lives
+    under ~/Documents, a common iCloud Drive sync location, which is a
+    plausible external cause for single-child folders being collapsed
+    outside of git/shell control. File contents were verified unaffected
+    (SHA-256 spot-checks against the manifest matched before and after).
+    packages.file_manifest_path and this release's .gitignore entry were
+    updated to the flat path actually present on disk; the mn-releve
+    release in this same session was proactively created flat to match.
+    Recommend excluding this repository from iCloud/Dropbox-style sync (or
+    confirming git status carefully after any registration session) to
+    avoid this recurring.
+
+Party-role assertions recorded (both release_slug blank = dataset-level):
+    usda-nrcs / credit / resources
+    usda-nrcs / credit / investigation
+
+Minted identifiers used in this registration:
+    dataset_id   = 85ce524c-6797-4bcd-86f8-ce6d1de08e77
+    ds_iid       = mn-nasis-pedons
+    release_id   = 01a0d5dc-9c00-7a12-89cd-45628aad7375
+    release_slug = mn-nasis-pedons--ing20260925--r001
+    party_id (usda-nrcs) = 15451de4-b1eb-464c-b33c-a05625b8ebb3

@@ -1,0 +1,5 @@
+# Large raw source delivery, not committed to git (no git-lfs configured).
+# Integrity is tracked via the SHA-256 manifest in
+# data/mn-nasis-pedons--ing20260925--r001/ instead.
+# See registry/registry--packages.csv row mn-nasis-pedons--ing20260925--r001.
+data/mn-nasis-pedons--ing20260925--r001/raw/

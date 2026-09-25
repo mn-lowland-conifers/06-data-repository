@@ -1,0 +1,127 @@
+mn-releve -- ing20260925 -- r001
+Open questions from LLM-assisted first-pass registration (2026-09-25)
+======================================================================
+
+This registration was drafted by an LLM curation assistant from the source
+delivery (releve_site_export_20241105.csv, DNR releve site metadata_06-2018.xlsx,
+and DNR Releve Data Use Agreement_2013.doc) originally uploaded at
+data/mn releve/raw/ and moved unchanged into the standard raw/ layout during
+this registration. It is a DRAFT. A human curator should resolve the items
+below before release_status is advanced past "registered".
+
+1. Data Use Agreement not confirmed executed for this delivery -- HIGH PRIORITY
+   raw/ancillary information/DNR Releve Data Use Agreement_2013.doc is a
+   blank/unsigned request-form template, not a signed copy specific to this
+   2024-11-05 export. The agreement's terms are real and binding if executed
+   (masking rare/endangered species locations and identities in any external
+   product; no re-sharing with third parties without DNR's written consent;
+   required copyright notice and MBS-DNR source acknowledgement in derived
+   products). Confirm whether the lab has an executed agreement on file with
+   DNR covering this delivery, and treat the release as restricted-use in the
+   meantime. packages.license=nap and intellectual_rights documents the
+   terms, but does not confirm they were actually agreed to for this export.
+
+2. Geographic bounding box left blank
+   packages.west/east/south/north were left blank, matching how
+   mn-peat-inventory handled the same situation. Coordinates in
+   releve_site_export_20241105.csv (utm_easting/utm_northing, and the
+   PostGIS the_geom column, decoded as SRID 26915) are NAD83 UTM Zone 15N,
+   not WGS84 decimal degrees as the registry dictionary's west/east/south/
+   north fields require. No coordinate-transform library (pyproj, GDAL,
+   etc.) was available in this environment to perform a real transform.
+   A follow-up pass with proper GIS tooling should populate these fields.
+
+3. 157 unique lead surveyors -- not resolved to person parties
+   The lead_surveyors_name column names 157 distinct individuals (top
+   contributor: Nancy P. Sather, 1,108 of 11,493 records; also George-Ann
+   Maxson, Michael D. Lee, Chel E. Anderson, Scott C. Zager, and others with
+   hundreds of records each). Unlike mn-peat-inventory's Koochiching County
+   report (which gave 18 individuals corroborating title-page/appendix
+   context), no external document here names or contextualizes individual
+   surveyors -- only the bare CSV column. This was judged insufficient
+   evidence to mint 157 person-party records in a first-pass registration.
+   If per-surveyor credit matters to the lab, this warrants a dedicated
+   contributor-resolution pass, likely starting with the highest-volume
+   names.
+
+4. ~14 other contributing institutions -- not registered or credited
+   institution_name in the delivered records names 15 distinct institutions
+   contributing non-trivial numbers of plots beyond MBS-DNR: USFS-Chippewa
+   NF (1,352), Univ. of Minnesota (1,115), NHP-DNR (712), Consultant (448),
+   The Nature Conservancy (392), USFS-Superior NF (238), Other (217),
+   National Park Service (172), Nat. Res. Res. Inst. (138), Environ. Qual.
+   Bd - CuNi (81), Three Rivers Park District (68), DNR-EWR (52), Pollution
+   Control Agency (50), plus a smaller remainder. Only mn-dnr (covering
+   MBS-DNR, the single largest contributor and the party the Data Use
+   Agreement requires be acknowledged) was credited with a party-role in
+   this pass. Confirm whether the other institutions should also receive
+   credit/investigation roles, and whether any need distinct party records
+   from mn-dnr (e.g., is "NHP-DNR" -- the DNR Natural Heritage Program --
+   the same party as mn-dnr, or a sub-unit worth its own record?).
+
+5. Amy Kendig's role is inferred from indirect evidence
+   registry--parties.csv includes a-kendig based solely on being listed as
+   cp:lastModifiedBy of the metadata xlsx on 2024-11-05, the same calendar
+   date as the CSV's own download_date. This suggests but does not confirm
+   she prepared or delivered this specific export (she may have simply
+   edited the metadata document for an unrelated reason on that date).
+   Confirm her actual role, or remove the party-role assertion if
+   unsupported.
+
+6. Placeholder-date suspicion in date_ column
+   coverage_start=1964-01-01 is the literal minimum of the date_ column, but
+   258 of 11,493 records (2.2%) share that exact date, and 18 more share
+   1977-01-01. A cluster this large sharing January 1 of a round year is
+   more consistent with a placeholder/unknown-date data-entry convention
+   than 258 independently confirmed field-survey dates on the same day.
+   NOT corrected here -- coverage_start reflects the raw data as delivered.
+   Confirm with DNR whether 1964-01-01 (and similar January-1 dates) are
+   placeholder values, and if so, whether coverage_start should instead
+   reflect the next-earliest plausible date.
+
+7. releve_status_name -- most records are "Transfer in Progress"
+   8,108 of 11,493 records (70.6%) have releve_status_name = "Transfer in
+   Progress" rather than "Quality Checked Complete" (3,285) or the fully
+   finalized "Publishable" (3). Per the metadata dictionary, "Transfer in
+   Progress" means "Relevé data entered in previous version of MNDNR
+   Relevé Database and transferred electronically to new system" -- i.e.
+   a system-migration status, not necessarily an indicator of QC/
+   completeness. Confirm whether this dataset should be flagged as
+   partially provisional, or whether "Transfer in Progress" records are
+   otherwise considered final/usable.
+
+8. source_citation constructed, not verbatim
+   No "cite this data as ..." string was supplied. The source_citation
+   field was built from the Data Use Agreement's acknowledgement
+   requirement plus file-metadata evidence. Confirm against DNR's actual
+   preferred citation format if one exists.
+
+9. Geographic scope: Wisconsin + missing state_code records
+   2 of 11,493 records have state_code=WI (Wisconsin) and 2,443 have
+   state_code=NA (missing/blank). geo_description notes this but the
+   packages row does not otherwise characterize or exclude these records.
+   Confirm whether the 2 Wisconsin records and ~21% missing-state_code
+   records are expected/in-scope for this "Minnesota" dataset naming, or
+   whether they should be flagged/filtered in a later harmonization pass.
+
+10. ds_iid uses ASCII "releve" (no accent)
+    The source term is "relevé" (with acute accent). ds_iid=mn-releve
+    drops the accent for kebab-case/ASCII-safety, consistent with the
+    ds_iid pattern constraint (^[a-z0-9]+(-[a-z0-9]+)*$) in
+    registry--dictionary.csv. The accented form is preserved in
+    title/abstract/notes text fields. Confirm this IID is acceptable.
+
+Party-role assertions recorded:
+    mn-dnr   / credit / resources        (dataset-level)
+    mn-dnr   / credit / investigation    (dataset-level)
+    d-wovcha / credit / data-curation    (dataset-level)
+    a-kendig / credit / data-curation    (release-level: mn-releve--ing20260925--r001)
+
+Minted identifiers used in this registration:
+    dataset_id   = bbc5e05b-3c79-4861-9123-6ad18bfd878e
+    ds_iid       = mn-releve
+    release_id   = 01a0d5dc-9c00-70cf-b5c7-993fd667345f
+    release_slug = mn-releve--ing20260925--r001
+    party_id (d-wovcha) = 71f8287d-6b08-46e9-a66f-2d288eb20180
+    party_id (a-kendig) = ba3726b5-aa93-4e1e-aef0-1c79d1e158c1
+    (mn-dnr party reused from existing registration: 71914630-f766-40a4-b4e0-27ed7ff2620c)
